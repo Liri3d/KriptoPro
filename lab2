@@ -1,0 +1,55 @@
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+def is_quadratic_residue(a, p):
+    if pow(a, (p - 1) // 2, p) == 1:
+        print(f"{a} - QR в Z{p}")
+    return pow(a, (p - 1) // 2, p) == 1 
+
+def find_square_root(a, p):
+    if not is_quadratic_residue(a, p):
+        return None  
+
+    # Если p ≡ 3 (mod 4)
+    if p % 4 == 3:
+        print(f"{p} = 3 mod 4")
+        print(f"Выполняем x = ± a ^((p+1)/4) mod p")
+        # print("---")
+        # print(f"a: {a}, (p+1)/4: {(p+1)//4}, p: {p}")
+        # print("---")
+        root = pow(a, (p + 1) // 4, p)
+        
+        return root 
+
+def solve_quadratic(a, m):
+    print(f"Уравнение: x^2 ≡ {a} (mod {m})")
+    
+    # Проверка, что m > 1
+    if m <= 1:
+        print("Модуль должен быть больше 1.")
+        return
+    
+    # Нахождение корня
+    roots = find_square_root(a, m)
+    
+    if roots is None:
+        print(f"{a} не является квадратным вычетом по модулю {m}. Уравнение не имеет решений.")
+    else:
+        print(f"Корни: {roots} и -{roots}")
+    print("-" * 10)
+
+# Примеры
+equations = [
+    (3, 23),
+    (2, 11),
+    (7, 19),
+    (4, 7),
+    (5, 11),
+    (7, 13),
+    (12, 17)
+]
+
+for a, m in equations:
+    solve_quadratic(a, m)
