@@ -1,0 +1,88 @@
+import math
+
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+
+def enumeration(n):
+    count = 0
+    for i in range(1, n):
+        print(f'НОД({i}, {n}) = {gcd(i, n)}')
+        if gcd(i, n) == 1:
+            count += 1
+    return count
+
+def formula(n):
+    result = n
+    p = 2
+    k = n
+    print(f"Начальное значение n: {n}")
+    
+    while p * p <= n:
+        print(f"Проверка простого числа: {p}")
+        
+        if n % p == 0:
+            print(f"{n} делится на {p}.")
+            while n % p == 0:
+                k //= p
+                print(f"Делим {n} на {p}, получаем: {k}")
+                n //= p
+            result -= result // p
+            print(f"Обновленный результат после учета {p}: {result}")
+        else:
+            print(f"{n} не делится на {p}.")
+        
+        p += 1
+    
+    if n > 1:
+        print(f"Осталось простое число больше 1: {n}. Обновляем результат.")
+        result -= result // n
+    
+    return result
+
+
+
+n = 12
+phi_brute = enumeration(n)
+print(f'Функция Эйлера для числа {n} (метод перебора): {phi_brute}\n')
+phi_formula = formula(n)
+print(f'Функция Эйлера для числа {n} (по формуле): {phi_formula}\n')
+
+
+
+
+
+def extended_euclidean(a, b):
+    if b == 0:
+        print(f'При a = {a}, b = {b} => gcd = {a}, x = 1, y = 0')
+        return a, 1, 0
+    else:
+        gcd, x1, y1 = extended_euclidean(b, a % b)
+        x = y1
+        y = x1 - (a // b) * y1
+        print(f'При a = {a}, b = {b} => gcd = {gcd}, x = {x}, y = {y}')
+        return gcd, x, y
+
+def solve_diophantine(a, b, c):
+    print(f'Решаем уравнение {a}x + {b}y = {c}')
+    
+    gcd, x0, y0 = extended_euclidean(a, b)
+
+    if c % gcd != 0:
+        print("Нет решений, так как c не делится на gcd(a, b).")
+        return None
+
+    # Умножаем результаты на c / gcd для получения решения
+    x0 *= c // gcd
+    y0 *= c // gcd
+
+    print(f'Общее решение: x = {x0}, y = {y0} при gcd({a}, {b}) = {gcd}')
+
+    return x0, y0, gcd
+
+# Пример использования
+a = 5
+b = 7
+c = 14
+solution = solve_diophantine(a, b, c)
