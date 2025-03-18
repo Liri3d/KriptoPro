@@ -1,0 +1,23 @@
+def quadratic_residues_and_nonresidues(modulus):
+    residues = set()
+    non_residues = set()
+
+    for x in range(modulus):
+        residue = (x ** 2) % modulus
+        residues.add(residue)
+
+    # Собираем невычеты
+    for y in range(modulus):
+        if y not in residues:
+            non_residues.add(y)
+
+    residues = sorted(residues)
+    non_residues = sorted(non_residues)
+    return residues, non_residues
+
+# Пример использования
+n = int(input("Введите модуль: "))
+residues, non_residues = quadratic_residues_and_nonresidues(n)
+
+print(f"Квадратичные вычеты по модулю {n}: {residues}")
+print(f"Квадратичные невычеты по модулю {n}: {non_residues}")
